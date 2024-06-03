@@ -7,22 +7,170 @@
     // 👉 CHALLENGE 1
     function profileActivation(profile, reason) {
 
+    } function profileActivation(profile, reason) {
+    // If profile is active
+    if (profile.active) {
+        // If reason is provided
+        if (reason) {
+            // Set profile to inactive and assign reason
+            profile.active = false;
+            profile.reason = reason;
+            return profile;
+        } else {
+            // Return message to confirm status manually
+            return "confirm status manually";
+        }
+    } else { // If profile is inactive
+        // Set profile to active and remove reason
+        profile.active = true;
+        delete profile.reason;
+        return profile;
     }
+}
+
+// Test cases
+let testProfile1 = {
+    active: false,
+    reason: "Not logged in for 30 days"
+};
+let result1 = profileActivation(testProfile1);
+console.log(result1); // Expected Output: { active: true }
+
+let testProfile2 = {
+    active: true,
+    reason: undefined
+};
+let result2 = profileActivation(testProfile2, "Not logged in for 30 days");
+console.log(result2); // Expected Output: { active: false, reason: "Not logged in for 30 days" }
+
+let testProfile3 = {
+    active: true,
+    reason: undefined
+};
+let result3 = profileActivation(testProfile3);
+console.log(result3); // Expected Output: "confirm status manually"
+
 
     // 👉 CHALLENGE 2
     function mineSweeper(grid, x, y) {
 
+    } function mineSweeper(grid, x, y) {
+    // Check if x or y is less than 1 or greater than 3
+    if (x < 1 || x > 3 || y < 1 || y > 3) {
+        return "invalid coordinates";
     }
+    
+    // Get the content at the specified coordinates
+    let content = grid[y - 1][x - 1];
+    
+    // Determine the response based on the content
+    if (content === "🟥") {
+        return "🟥 💀";
+    } else if (content === "🟦") {
+        return "🟦 🥳";
+    }
+}
+
+// Test cases
+let grid1 = [["🟥", "🟦", "🟥"], ["🟦", "🟥", "🟥"], ["🟥", "🟦", "🟦"]];
+let output1 = mineSweeper(grid1, 1, 1);
+console.log(output1); // Expected Output: "🟥 💀"
+
+let grid2 = [["🟥", "🟦", "🟥"], ["🟦", "🟥", "🟥"], ["🟥", "🟦", "🟦"]];
+let output2 = mineSweeper(grid2, 2, 3);
+console.log(output2); // Expected Output: "🟦 🥳"
+
+let grid3 = [["🟥", "🟦", "🟥"], ["🟦", "🟥", "🟥"], ["🟥", "🟦", "🟦"]];
+let output3 = mineSweeper(grid3, 4, 1);
+console.log(output3); // Expected Output: "invalid coordinates"
+
 
     // 👉 CHALLENGE 3
     function booleanize(obj) {
 
+    } function booleanize(obj) {
+  let error = false; // Flag to track if any property name exceeds 9 characters
+  
+  // Loop through each property in the object
+  for (let prop in obj) {
+    // Check if property name exceeds 9 characters
+    if (prop.length > 9) {
+      error = true;
+      continue; // Skip further processing for this property and move to the next one
     }
+    
+    // Get the value of the current property
+    let value = obj[prop];
+    
+    // Transform value based on criteria
+    if (value === 0) {
+      obj[prop] = false;
+    } else if (value === 1) {
+      obj[prop] = true;
+    } else if (value === null) {
+      // Delete key-value pair if value is null
+      delete obj[prop];
+    }
+  }
+  
+  // Check if any property name exceeds 9 characters
+  if (error) {
+    return "shorten all prop names to 9 chars or less";
+  }
+  
+  // Return the modified object
+  return obj;
+}
+
+// Example usage
+let obj = {
+  longPropertyName: 0,
+  shortProp: 1,
+  zeroValue: 0,
+  nullValue: null,
+  otherProp: "test"
+};
+
+console.log(booleanize(obj));
+
 
     // 👉 CHALLENGE 4
     function scrub(text, forbidden) {
 
+    } function scrub(text, forbidden) {
+    // If text is empty or there are no forbidden words, return the original text
+    if (text === "" || forbidden.length === 0) {
+        return text;
     }
+    
+    // Split the text into an array of words
+    let words = text.split(/\s+/);
+    
+    // Iterate over each word
+    for (let i = 0; i < words.length; i++) {
+        let word = words[i];
+        // Check if the word is in the forbidden array
+        if (forbidden.includes(word)) {
+            // Replace the word with a string of "x" characters of equal length
+            words[i] = 'x'.repeat(word.length);
+        }
+    }
+    
+    // Join the words back into a single string and return
+    return words.join(' ');
+}
+
+// Test cases
+console.log(scrub("out of the silent planet", ["of", "silent"])); // Expected Output: "out xx the xxxxxx planet"
+
+console.log(scrub("the ghost of the navigator", ["the"])); // Expected Output: "xxx ghost of xxx navigator"
+
+console.log(scrub("lost somewhere in time", [])); // Expected Output: "lost somewhere in time"
+
+console.log(scrub("aces high", ["high", "aces", "hearts"])); // Expected Output: "xxxx xxxx"
+
+console.log(scrub("", ["high", "aces"])); // Expected Output: ""
+
 
     // 👉 CHALLENGE 5 (bonus, NOT graded)
     function normalizePhoneNumber(num) {
